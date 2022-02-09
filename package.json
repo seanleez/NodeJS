@@ -1,0 +1,23 @@
+{
+  "name": "vanviendong",
+  "version": "1.0.0",
+  "description": "Complete Node.js Guide",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanviendong96/FUNIXNodeJS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vanviendong96/FUNIXNodeJS/issues"
+  },
+  "homepage": "https://github.com/vanviendong96/FUNIXNodeJS#readme",
+  "dependencies": {
+    "nodemon": "^1.18.3"
+  }
+}
