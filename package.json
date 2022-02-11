@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/vanviendong96/FUNIXNodeJS#readme",
   "dependencies": {
+    "express": "^4.17.2",
     "nodemon": "^1.18.3"
   }
 }
