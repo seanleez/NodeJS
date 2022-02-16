@@ -35,6 +35,5 @@ module.exports = class Product {
             }
             return JSON.parse(fileContent);
         });
-        return products;
     }
 };
