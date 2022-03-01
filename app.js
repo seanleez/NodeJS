@@ -52,8 +52,8 @@ Order.belongsToMany(Product, { through: OrderItem });
 
 sequelize
     // force: true : is gonna override table and delete all records in table
-    .sync({ force: true })
-    // .sync()
+    // .sync({ force: true })
+    .sync()
     .then((result) => {
         return User.findByPk(1);
         // console.log(result);
