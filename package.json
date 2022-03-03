@@ -1,31 +1,31 @@
 {
-  "name": "vanviendong",
-  "version": "1.0.0",
-  "description": "Complete Node.js Guide",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vanviendong96/FUNIXNodeJS.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vanviendong96/FUNIXNodeJS/issues"
-  },
-  "homepage": "https://github.com/vanviendong96/FUNIXNodeJS#readme",
-  "dependencies": {
-    "body-parser": "^1.19.1",
-    "ejs": "^3.1.6",
-    "express": "^4.17.2",
-    "express-handlebars": "3.0",
-    "mongodb": "^4.4.0",
-    "mysql2": "^2.3.3",
-    "nodemon": "^1.18.3",
-    "pug": "^3.0.2",
-    "sequelize": "^6.17.0"
-  }
+    "name": "vanviendong",
+    "version": "1.0.0",
+    "description": "Complete Node.js Guide",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vanviendong96/FUNIXNodeJS.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/vanviendong96/FUNIXNodeJS/issues"
+    },
+    "homepage": "https://github.com/vanviendong96/FUNIXNodeJS#readme",
+    "dependencies": {
+        "body-parser": "^1.19.1",
+        "ejs": "^3.1.6",
+        "express": "^4.17.2",
+        "express-handlebars": "3.0",
+        "mongodb": "^4.4.0",
+        "mysql2": "^2.3.3",
+        "nodemon": "^1.18.3",
+        "pug": "^3.0.2",
+        "sequelize": "^6.17.0"
+    }
 }
