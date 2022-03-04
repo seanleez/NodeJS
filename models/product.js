@@ -18,6 +18,23 @@ class Product {
             })
             .catch((err) => console.log(err));
     }
+
+    static fetchAll() {
+        const db = getDb();
+        // find() return a cursor object, not a promise
+        // toArray() convert all products into JS array
+        return db
+            .collection('products')
+            .find()
+            .toArray()
+            .then((products) => {
+                console.log(products);
+                return products;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 }
 
 module.exports = Product;
