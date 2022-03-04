@@ -16,7 +16,7 @@ class Product {
         if (this._id) {
             // Update the product
             dbOp = db
-                .collection(products)
+                .collection('products')
                 .updateOne(
                     { _id: new mongodb.ObjectId(this._id) },
                     { $set: this }
@@ -25,8 +25,6 @@ class Product {
             dbOp = db.collection('products').insertOne(this);
         }
         return dbOp
-            .collection('products')
-            .insertOne(this)
             .then((result) => {
                 console.log(result);
             })
