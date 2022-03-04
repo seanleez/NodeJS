@@ -25,7 +25,7 @@ exports.getProduct = (req, res, next) => {
     //     });
     //   })
     //   .catch(err => console.log(err));
-    Product.findByPk(prodId)
+    Product.findById(prodId)
         .then((product) => {
             res.render('shop/product-detail', {
                 product: product,
@@ -89,7 +89,7 @@ exports.postCart = (req, res, next) => {
                 newQuantity = oldQuantity + 1;
                 return product;
             }
-            return Product.findByPk(prodId);
+            return Product.findById(prodId);
         })
         .then((product) => {
             return fetchedCart.addProduct(product, {
@@ -161,7 +161,5 @@ exports.getOrders = (req, res, next) => {
                 orders: orders,
             });
         })
-        .catch((err) => {
-            console.log(order);
-        });
+        .catch((err) => console.log(err));
 };
