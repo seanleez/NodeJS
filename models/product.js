@@ -7,7 +7,9 @@ class Product {
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
-        this._id = new mongodb.ObjectId(id);
+        // when pass no id in Product constructor,
+        // new mongodb.ObjectId(id) automatically generate random id
+        this._id = id ? new mongodb.ObjectId(id) : null;
     }
 
     save() {
