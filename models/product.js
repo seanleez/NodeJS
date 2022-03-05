@@ -2,7 +2,7 @@ const mongodb = require('mongodb');
 const getDb = require('../util/database').getDb;
 
 class Product {
-    constructor(title, price, description, imageUrl, id) {
+    constructor(title, price, description, imageUrl, id, userId) {
         this.title = title;
         this.price = price;
         this.description = description;
@@ -10,6 +10,7 @@ class Product {
         // when pass no id in Product constructor,
         // new mongodb.ObjectId(id) automatically generate random id
         this._id = id ? new mongodb.ObjectId(id) : null;
+        this.userId = userId;
     }
 
     save() {
