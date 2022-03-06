@@ -74,8 +74,13 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
+    // select: return fields which we wanna retrieve
+    // populate: display entire objectId instead of just single Id
     Product.find()
+        // .select('title price -_id')
+        // .populate('userId', 'name')
         .then((products) => {
+            console.log(products);
             res.render('admin/products', {
                 prods: products,
                 pageTitle: 'Admin Products',
