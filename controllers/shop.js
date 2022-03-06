@@ -1,9 +1,8 @@
 const Product = require('../models/product');
-
+const Order = require('../models/order');
 exports.getProducts = (req, res, next) => {
     Product.find()
         .then((products) => {
-            console.log(products);
             res.render('shop/product-list', {
                 prods: products,
                 pageTitle: 'All Products',
@@ -17,7 +16,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
-    Product.findById(prodId)
+    Product.findById(prodId) //findById la 1 method cuar mongoose
         .then((product) => {
             res.render('shop/product-detail', {
                 product: product,
@@ -47,8 +46,8 @@ exports.getCart = (req, res, next) => {
         .populate('cart.items.productId')
         .execPopulate()
         .then((user) => {
-            console.log(user.cart.items);
             const products = user.cart.items;
+            console.log(products);
             res.render('shop/cart', {
                 path: '/cart',
                 pageTitle: 'Your Cart',
@@ -81,9 +80,19 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-    let fetchedCart;
     req.user
-        .addOrder()
+        .populate('cart.items.productId')
+        .execPopulate()
+        .then((user) => {
+            const products = user.cart.items.map((i) => {
+                return { quantity: i.quantity, product: i.productId };
+            });
+            const order = new Order({
+                user: { name: req.user.name, userId: req.user },
+                products: products,
+            });
+            return order.save();
+        })
         .then((result) => {
             res.redirect('/orders');
         })
