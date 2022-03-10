@@ -1,0 +1,57 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+        <main>
+
+            <%- include('../includes/layout.ejs')%>
+
+                    <div class="col-xs-12 col-md-6 col-lg-8">
+                        <h2 class="text-center"><%= employee.name %></h2>
+                        <hr>
+                        <p>Working Status : Online</p>
+                        <p>Date: <%= punchData.date %></p>
+                        <div class="row d-flex">
+                            <% for(i = 0; i < punchData.punch.shift.length; i++) { %>
+                            <div class="card col-4">
+                                <h5 class="text-center">Shift <%= i + 1 %></h5>
+                                <p>Work Place: <%= punchData.punch.shift[i].workPlace %></p>
+                                <p>Start: <%= punchData.punch.shift[i].startTime %></p>
+                                <p>Finish: <%= punchData.punch.shift[i].finishTime %></p>
+                                <p>Working Time: <%= punchData.punch.shift[i].shiftWorkingTime %></p>
+                            </div>
+                            <% } %>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center text-center">
+                    <form
+                        action="/punch-out"
+                        method="post"
+                        class="col-xs-12 col-sm-5 col-lg-3"
+                    >
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-lg m-2"
+                        >
+                            Punch-out
+                        </button>
+                    </form>
+                    <form
+                        action="/annualleave"
+                        method="post"
+                        class="col-xs-12 col-sm-5 col-lg-3"
+                    >
+                        <button
+                            type="submit"
+                            class="btn btn-primary btn-lg m-2"
+                        >
+                            Annual Leave
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <%- include('../includes/end.ejs') %>

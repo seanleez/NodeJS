@@ -1,0 +1,91 @@
+<%- include('../includes/head.ejs') %>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+        <main>
+
+            <%- include('../includes/layout.ejs')%>
+
+                    <form
+                        action="/editinfo"
+                        method="POST"
+                        class="col-xs-12 col-md-6 col-lg-8"
+                    >
+                        <h2 class="text-center"><%= employee.name %></h2>
+                        <hr>
+                        <table>
+                            <tr>
+                                <td>
+                                    <p>ID:</p>
+                                </td>
+                                <td>
+                                    <p> <%= employee.id %> </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Day of Birth: </p>
+                                </td>
+                                <td>
+                                    <p> <%= employee.doB.toLocaleDateString("vi-VN") %></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Salary Scale:</p>
+                                </td>
+                                <td>
+                                    <p> <%= employee.salaryScale %> </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Start Day:</p>
+                                </td>
+                                <td>
+                                    <p> <%= employee.startDate.toLocaleDateString("vi-VN") %> </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Department:</p>
+                                </td>
+                                <td>
+                                    <p> <%= employee.department %> </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p>Annual Leave:</p>
+                                </td>
+                                <td>
+                                    <p> <%= employee.annualLeave %> </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="imageUrl">Image URL:</label>
+                                </td>
+                                <td>
+                                    <input
+                                        type="text"
+                                        name="imageUrl"
+                                        id="imageUrl"
+                                    />
+                                </td>
+                            </tr>
+                        </table>
+                        <hr>
+                        <div class="text-center p-2">
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg"
+                            >
+                                Edit Info
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+        <%- include('../includes/end.ejs') %>

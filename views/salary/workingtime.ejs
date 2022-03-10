@@ -1,0 +1,35 @@
+<%- include('../includes/head.ejs') %>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+        <main>
+            
+            <%- include('../includes/layout.ejs')%>
+
+                    <div class="col-xs-12 col-md-6 col-lg-8">
+                        <h2 class="text-center"><%= employee.name %></h2>
+                        <hr>
+                        <!-- multiple day???? -->
+                        <div>
+                            <p>Date: <%= punchData.date %></p>
+                            <div class="row d-flex">
+                                <% for(i = 0 ; i < punchData.punch.length ; i++) { %>
+                                    <div class="card col-4">
+                                        <h5 class="text-center">Shift <%= i + 1 %> </h5>
+                                        <p>Work Place: <%= punchData.punch[i].workPlace %></p>
+                                        <p>Start: <%= punchData.punch[i].startTime %></p>
+                                        <p>Finish: <%= punchData.punch[i].finishTime %></p>
+                                        <p>Working Time: <%= punchData.punch[i].workingTime %></p>
+                                    </div>
+                                <% } %>
+                            </div>
+                            <p>Total Working Time Today: <%= punchData.totalWorkingTime%></p>
+                            <p>Over Time: <%= punchData.overTime%></p>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <%- include('../includes/end.ejs') %>
+

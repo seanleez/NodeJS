@@ -1,0 +1,47 @@
+<%- include('../includes/head.ejs') %>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+        <main>
+            
+            <%- include('../includes/layout.ejs')%>
+
+                    <div class="col-xs-12 col-md-6 col-lg-8">
+                        <form action="/salary" method="POST" >
+                            <h2 class="text-center"><%= employee.name %></h2>
+                            <hr>
+                            <label for="salarymonth">Choose the month: </label>
+                            <select name="monthsalary" id="monthsalary">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">1</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                            <p>Salary: {...}</p>
+                            <hr>
+                            <div class="text-center p-2">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >
+                                    See Salary
+                                </button>
+                            </div>
+                        </form>
+                        <form action="/workingtime" method="get" class="text-center my-4">
+                            <input type="submit" value="See Working Time" class="btn btn-primary"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <%- include('../includes/end.ejs') %>
+
