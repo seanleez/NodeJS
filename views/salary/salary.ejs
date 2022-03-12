@@ -10,11 +10,12 @@
                         <form action="/salary" method="POST" >
                             <h2 class="text-center"><%= employee.name %></h2>
                             <hr>
-                            <label for="salarymonth">Choose the month: </label>
-                            <select name="monthsalary" id="monthsalary">
+                            <!-- theoretically our database just contain one year data -->
+                            <label for="monthSalary">Choose the month to see your Salary: </label>
+                            <select name="monthSalary" id="monthSalary">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
-                                <option value="3">1</option>
+                                <option value="3">3</option>
                                 <option value="4">4</option>
                                 <option value="5">5</option>
                                 <option value="6">6</option>
@@ -25,19 +26,47 @@
                                 <option value="11">11</option>
                                 <option value="12">12</option>
                             </select>
-                            <p>Salary: {...}</p>
+                            <% if(hasPunchData) {%>
+                                <div>
+                                    <hr>
+                                    <table>
+                                        <tr>
+                                            <td><label>Month:</label></td>
+                                            <td><%= monthSalary %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>Salary Scale:</label></td>
+                                            <td><%= salaryScale %></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>OverTime:</label></td>
+                                            <td><%= Math.floor(overTime / 60)%>h<%= (Math.abs(overTime) % 60 === 0 ) ? '00' : (Math.abs(overTime) % 60)  %>p</td>
+                                        </tr>
+                                        <tr>
+                                        </tr>
+                                        <tr>
+                                            <td><label>Salary:</label></td>
+                                            <td><%= salary.toLocaleString('vi-VN', {style: 'currency', currency: 'VND'}) %></td>
+                                        </tr>
+                                    </table>
+                                    <p class="mx-3">(Salary = SalaryScale * 3.000.000 + OverTime * 2.000.000)</p>
+                                </div>
+                            <% } else { %>
+                                <hr>
+                                <h3 class="text-center">There's no Data</h3>
+                            <% } %>
                             <hr>
                             <div class="text-center p-2">
                                 <button
                                     type="submit"
-                                    class="btn btn-primary"
+                                    class="btn btn-primary btn-lg"
                                 >
                                     See Salary
                                 </button>
                             </div>
                         </form>
                         <form action="/workingtime" method="get" class="text-center my-4">
-                            <input type="submit" value="See Working Time" class="btn btn-primary"/>
+                            <input type="submit" value="See Working Time" class="btn btn-primary btn-lg"/>
                         </form>
                     </div>
                 </div>

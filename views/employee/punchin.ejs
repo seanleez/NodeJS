@@ -10,39 +10,29 @@
                     <div class="col-xs-12 col-md-6 col-lg-8">
                         <h2 class="text-center"><%= employee.name %></h2>
                         <hr>
-                        <p>Working Status : Online</p>
-                        <p>Date: <%= punchData.date %></p>
+                        <p>Date: <%= punchData.date.toLocaleDateString() %></p>
                         <div class="row d-flex">
                             <% for(i = 0; i < punchData.punch.shift.length; i++) { %>
                             <div class="card col-4">
                                 <h5 class="text-center">Shift <%= i + 1 %></h5>
                                 <p>Work Place: <%= punchData.punch.shift[i].workPlace %></p>
-                                <p>Start: <%= punchData.punch.shift[i].startTime %></p>
-                                <p>Finish: <%= punchData.punch.shift[i].finishTime %></p>
-                                <p>Working Time: <%= punchData.punch.shift[i].shiftWorkingTime %></p>
+                                <p>Start: <%= punchData.punch.shift[i].startTime.toString().slice(16,21) %></p>
+                                <p>Finish: <%= punchData.punch.shift[i].finishTime.toString().slice(16,21) %></p>
+                                <p>Working Time: <%= Math.floor(punchData.punch.shift[i].shiftWorkingTime / 60) %>h<%= (punchData.punch.shift[i].shiftWorkingTime % 60 === 0) ? '00' : punchData.punch.shift[i].shiftWorkingTime % 60%>p</p>
                             </div>
                             <% } %>
                         </div>
+                        <p>Total Working Time: <%= Math.floor(punchData.dailyWorkingTime / 60) %>h<%= (punchData.dailyWorkingTime % 60 === 0) ? '00' : (punchData.dailyWorkingTime % 60) %>p</p>
+                        <p>Over Time: <%= Math.floor(punchData.overTime / 60) %>h<%= punchData.overTime % 60 === 0 ? '00' : Math.abs(punchData.overTime % 60) %>p</p>
                         <hr>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-center text-center">
-                    <form
-                        action="/punch-out"
-                        method="post"
-                        class="col-xs-12 col-sm-5 col-lg-3"
-                    >
-                        <button
-                            type="submit"
-                            class="btn btn-primary btn-lg m-2"
-                        >
-                            Punch-out
-                        </button>
-                    </form>
+                    <div class="col-xs-12 col-md-6 col-lg-4"></div>
                     <form
                         action="/annualleave"
-                        method="post"
-                        class="col-xs-12 col-sm-5 col-lg-3"
+                        method="get"
+                        class="col-xs-12 col-md-6 col-lg-8"
                     >
                         <button
                             type="submit"

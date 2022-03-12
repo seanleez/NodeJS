@@ -17,19 +17,13 @@
                         <hr>
                         <table>
                             <tr>
-                                <td>
-                                    <label for="date">Date: </label>
-                                </td>
-                                <td>
-                                    <input class="my-3" type="date" name="date" id="date">
-                                </td>
+                                <td><label for="date">Date:</label></td>
+                                <td><input type="date" name="date" id="date"></td>
                             </tr>
                             <tr>
+                                <td><label for="workPlace">Work Place: </label></td>
                                 <td>
-                                    <label for="workPlace">Work Place: </label>
-                                </td>
-                                <td>
-                                    <select class="mx-2" name="workPlace" id="workPlace">
+                                    <select name="workPlace" id="workPlace">
                                         <option selected value="Company">Company</option>
                                         <option value="Home">Home</option>
                                         <option value="Customer">Customer</option>
@@ -37,13 +31,86 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td><label for="startHour">Start Hour:</label></td>
                                 <td>
-                                    <p  class="mt-3">Working Status:</p>
+                                    <select name="startHour" id="startHour" class="selectWidth5rem">
+                                        <option selected value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                    </select>
                                 </td>
+                                <td><label for="startMinute">Start Minute:</label></td>
                                 <td>
-                                    <p  class="mt-3">Offline</p>
+                                    <select name="startMinute" id="startMinute" class="selectWidth5rem">
+                                        <option value="0">00</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="45">45</option>
+                                    </select>
                                 </td>
                             </tr>
+                            <tr>
+                                <td><label for="finishHour">Finish Hour:</label></td>
+                                <td>
+                                    <select name="finishHour" id="finishHour" class="selectWidth5rem">
+                                        <option selected value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                        <option value="21">21</option>
+                                        <option value="22">22</option>
+                                        <option value="23">23</option>
+                                        <option value="24">24</option>
+                                    </select>
+                                </td>
+                                <td><label for="finishMinute">Finish Minute:</label></td>
+                                <td>
+                                    <select name="finishMinute" id="finishMinute" class="selectWidth5rem">
+                                        <option value="0">00</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="45">45</option>
+                                    </select>
+                                </td>
+                                
+                            </tr>                        
                         </table>
                         <hr>
                         <div class="text-center p-2">
@@ -57,10 +124,11 @@
                     </form>
                 </div>
                 <div class="row d-flex justify-content-center text-center">
+                    <div class="col-xs-12 col-md-6 col-lg-4"></div>
                     <form
                         action="/annualleave"
-                        method="post"
-                        class="col-xs-12 col-sm-5 col-lg-3"
+                        method="get"
+                        class="col-xs-12 col-md-6 col-lg-8 text-center"
                     >
                         <button
                             type="submit"

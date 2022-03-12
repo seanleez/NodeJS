@@ -1,65 +1,73 @@
-const employee = {
-    id: '30940394',
-    name: 'John',
-    doB: 20032009,
-    salaryScale: 1.1,
-    startDate: 20042017,
-    department: 'HR',
-    annualLeave: 200,
-    imageUrl:
-        'http://assets.htv.com.vn/Images/TAP%20CHI%20HTV/XEM%20GI%20HOM%20NAY/DUONG/TITANIC/LEO1.jpg',
-};
+const Employee = require('../models/employee');
+const PunchData = require('../models/punchdata');
 
-const punchData = {
-    employee_id: '30940394',
-    date: 13092022,
-    punch: [
-        {
-            workPlace: 'company',
-            startTime: 8,
-            finishTime: 12,
-            workingTime: 4,
-        },
-        {
-            workPlace: 'home',
-            startTime: 13,
-            finishTime: 17,
-            workingTime: 4,
-        },
-        {
-            workPlace: 'customer',
-            startTime: 18,
-            finishTime: 21,
-            workingTime: 3,
-        },
-        {
-            workPlace: 'customer',
-            startTime: 18,
-            finishTime: 21,
-            workingTime: 3,
-        },
-    ],
-    totalWorkingTime: 11,
-    overTime: 3,
-};
-
+const employeeId = '622c10eb5d3ae36d71eb16bc';
+var monthSalary;
 exports.getSalary = (req, res, next) => {
-    res.render('salary/salary', {
-        pageTitle: 'Salary',
-        employee: employee,
-        punchData: punchData,
-    });
+    let hasPunchData = false;
+    let tempEmployee;
+    Employee.findById(employeeId)
+        .then((employee) => {
+            tempEmployee = { ...employee._doc };
+        })
+        .then(() => {
+            PunchData.find({
+                employee_id: employeeId,
+            }).then((punchdatas) => {
+                const salaryScale = tempEmployee.salaryScale;
+                let totalOverTimeInMonth = 0;
+
+                for (const p of punchdatas) {
+                    if (p.date.getMonth() + 1 === Number(monthSalary)) {
+                        hasPunchData = true;
+                        console.log(p);
+                        totalOverTimeInMonth += p.overTime;
+                    }
+                }
+                const calculatedSalary =
+                    salaryScale * 3000000 +
+                    (totalOverTimeInMonth / 60) * 2000000;
+
+                res.render('salary/salary', {
+                    pageTitle: 'Salary',
+                    hasPunchData: hasPunchData,
+                    monthSalary: monthSalary,
+                    salaryScale: salaryScale,
+                    overTime: totalOverTimeInMonth,
+                    salary: calculatedSalary,
+                    employee: tempEmployee,
+                });
+            });
+        })
+        .catch((err) => console.log(err));
 };
 
 exports.postSalary = (req, res, next) => {
-    console.log(req.body);
+    monthSalary = req.body.monthSalary;
     res.redirect('/salary');
 };
 
 exports.getWorkingTime = (req, res, next) => {
-    res.render('salary/workingtime', {
-        pageTitle: 'Working Time',
-        employee: employee,
-        punchData: punchData,
-    });
+    let tempEmployee;
+    Employee.findById(employeeId)
+        .then((employee) => {
+            tempEmployee = { ...employee._doc };
+        })
+        .then(() => {
+            PunchData.find({
+                employee_id: employeeId,
+            })
+                .then((punchdatas) => {
+                    console.log(punchdatas);
+                    console.log(tempEmployee);
+                    res.render('salary/workingtime', {
+                        pageTitle: 'Working Time',
+                        employee: tempEmployee,
+                        punchDatas: punchdatas.sort((p1, p2) =>
+                            p1.date > p2.date ? 1 : p2.date > p1.date ? -1 : 0
+                        ),
+                    });
+                })
+                .catch((err) => console.log(err));
+        });
 };

@@ -1,0 +1,67 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+        <main>
+
+            <%- include('../includes/layout.ejs')%>
+
+                    <form
+                        action="/covidregistration"
+                        method="POST"
+                        class="col-xs-12 col-md-6 col-lg-8"
+                    >
+                        <h2 class="text-center"><%= employee.name %></h2>
+                        <hr>
+                        <h5>Basic Information:</h5>
+                        <table>
+                            <tr>
+                                <td><label for="vaccineShot1">Vaccine Shot 1: </label></td>
+                                <td>
+                                    <input type="text" name="vaccineShot1" id="vaccineShot1">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="dateShot1">Date:</label></td>
+                                <td><input type="date" name="dateShot1" id="dateShot1"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="vaccineShot2">Vaccine Shot 2: </label></td>
+                                <td>
+                                    <input type="text" name="vaccineShot2" id="vaccineShot2">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="dateShot2">Date:</label></td>
+                                <td><input type="date" name="dateShot2" id="dateShot2"></td>
+                            </tr>
+                        </table>
+                        <hr>
+                        <h5>Body Temprature Register (Recently):</h5>
+                        <table>
+                            <tr>
+                                <td><label for="bodyTemprature">Body Temprature: </label></td>
+                                <td>
+                                    <input type="number" name="bodyTemprature" id="bodyTemprature" step="0.5">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label for="negative">Negative With Covid:</label></td>
+                                <td><input type="checkbox" name="negative" id="negative"></td>
+                            </tr>
+                        </table>
+                        <hr>
+                        <div class="text-center p-2">
+                            <button
+                                type="submit"
+                                class="btn btn-primary btn-lg"
+                            >
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>      
+            </div>
+        </main>
+        <%- include('../includes/end.ejs') %>

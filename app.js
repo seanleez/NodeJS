@@ -13,14 +13,16 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 const employeeRoutes = require('./routes/employee');
-// const salaryRoutes = require('./routes/salary');
-const editinfo = require('./routes/editinfo');
+const editInfoRoutes = require('./routes/editinfo');
+const salaryRoutes = require('./routes/salary');
+const covidInfoRoutes = require('./routes/covid');
 // parse the body of incoming request
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(editinfo);
-// app.use(salaryRoutes);
+app.use(covidInfoRoutes);
+app.use(salaryRoutes);
+app.use(editInfoRoutes);
 app.use(employeeRoutes);
 
 app.use(errorController.get404);

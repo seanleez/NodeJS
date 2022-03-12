@@ -10,13 +10,9 @@ router.get('/punch-in', employeeController.getPunchIn);
 
 router.post('/punch-in', employeeController.postPunchIn);
 
-// router.get('/punch-out', employeeController.getPunchOut);
+router.get('/annualleave', employeeController.getAnnualLeave);
 
-// router.post('/punch-out', employeeController.postPunchOut);
-
-// router.get('/annualleave', employeeController.getAnnualLeave);
-
-// router.post('/annualleave', employeeController.postAnnualLeave);
+router.post('/annualleave', employeeController.postAnnualLeave);
 
 router.get('/', employeeController.getEmployee);
 
