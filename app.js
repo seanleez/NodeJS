@@ -39,7 +39,10 @@ app.use(
 // fetch dummy user and store that in request
 // so that we can use it for the rest of that request, in all the routes and controllers
 app.use((req, res, next) => {
-    User.findById('6224578b6d3b3c3aad17b4f4')
+    if (!req.session.user) {
+        return next();
+    }
+    User.findById(req.session.user._id)
         .then((user) => {
             req.user = user;
             next();
