@@ -25,6 +25,7 @@ const userSchema = new Schema({
 });
 
 userSchema.methods.addToCart = function (product) {
+    // if findIndex cant find the element, it will return -1
     const cartProductIndex = this.cart.items.findIndex((cp) => {
         return cp.productId.toString() === product._id.toString();
     });
