@@ -71,6 +71,18 @@ app.use(authRoutes);
 app.get('/500', errorController.get500);
 app.use(errorController.get404);
 
+// error-handling middle, express will skip all other middlewares and
+// move right away to these error-handling middlewares
+// when you call next() with an error passed to it
+
+// If you got more than one error-handling middleware, they execute from top to bottom
+// Just like "normal" middlewares
+
+app.use((error, req, res, next) => {
+    // res.status(error.httpStatusCode).render(...)
+    res.redirect('/500');
+});
+
 mongoose
     .connect(MONGODB_URI)
     .then((result) => {
