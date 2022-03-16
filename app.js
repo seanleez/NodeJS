@@ -28,6 +28,7 @@ const fileStorage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         cb(null, Date.now().toString() + '-' + file.originalname);
+        // cb(null, new Date().toISOString() + '-' + file.originalname);
     },
 });
 
@@ -54,7 +55,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
-// app.use(multer({ storage: fileStorage }).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(
     session({
