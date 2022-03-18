@@ -2,61 +2,42 @@ const Employee = require('../models/employee');
 const PunchData = require('../models/punchdata');
 const AnnualLeave = require('../models/annualleave');
 
-const employeeId = '622c10eb5d3ae36d71eb16bc';
 var punchDate;
 
 exports.getEmployee = (req, res, next) => {
-    // res.render('employee', { pageTitle: 'Employee'});
-    // In case employees collection has one user
-    Employee.findById(employeeId)
-        .then((employee) => {
-            console.log('Display Employee!');
-            res.render('employee', {
-                pageTitle: 'Employee',
-                employee: employee,
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    console.log('Display Employee.');
+    res.render('employee', {
+        pageTitle: 'Employee',
+        employee: req.user,
+    });
 };
 
 exports.getPunchIn = (req, res, next) => {
-    let tempEmployee;
-    Employee.findById(employeeId)
-        .then((employee) => {
-            tempEmployee = { ...employee._doc };
+    PunchData.find({
+        employee_id: req.user._id,
+    })
+        .then((punchdatas) => {
+            for (let punchdata of punchdatas) {
+                if (
+                    punchdata.date.toLocaleDateString('vi-VN') ===
+                    punchDate.toLocaleDateString('vi-VN')
+                ) {
+                    return punchdata;
+                }
+            }
         })
-        .then(() => {
-            PunchData.find({
-                employee_id: employeeId,
-            })
-                .then((punchdatas) => {
-                    for (let punchdata of punchdatas) {
-                        if (
-                            punchdata.date.toLocaleDateString('vi-VN') ===
-                            punchDate.toLocaleDateString('vi-VN')
-                        ) {
-                            return punchdata;
-                        }
-                    }
-                })
-                .then((punchdata) => {
-                    res.render('employee/punchin', {
-                        pageTitle: 'Punch In',
-                        employee: tempEmployee,
-                        punchData: punchdata,
-                    });
-                });
+        .then((punchdata) => {
+            res.render('employee/punchin', {
+                pageTitle: 'Punch In',
+                employee: req.user,
+                punchData: punchdata,
+            });
         })
-        .catch((err) => {
-            console.log(err);
-        });
+        .catch((err) => console.log(err));
 };
 
 exports.postPunchIn = (req, res, next) => {
-    console.log(req.body);
-
+    const employeeId = req.user._id;
     const workPlace = req.body.workPlace;
     const startHour = req.body.startHour;
     const startMinute = req.body.startMinute;
@@ -89,7 +70,7 @@ exports.postPunchIn = (req, res, next) => {
             });
             // console.log(punchDataIndex);
             if (punchDataIndex >= 0) {
-                // Add new Shift
+                // Add new Shift in existed Day
                 const newShift = [...punchdatas[punchDataIndex].punch.shift];
 
                 newShift.push({
@@ -105,6 +86,7 @@ exports.postPunchIn = (req, res, next) => {
                 punchdatas[punchDataIndex].dailyWorkingTime +=
                     calculateWorkingTime;
                 punchdatas[punchDataIndex].overTime += calculateWorkingTime;
+                console.log('Add new shift for existed day');
                 return punchdatas[punchDataIndex].save();
             } else {
                 // Add new day
@@ -124,12 +106,11 @@ exports.postPunchIn = (req, res, next) => {
                     dailyWorkingTime: calculateWorkingTime,
                     overTime: calculateWorkingTime - 8 * 60,
                 });
-                console.log('Add new Punchdata');
+                console.log('Add shift for new day');
                 return punchData.save();
             }
         })
         .then((result) => {
-            console.log(result);
             res.redirect('/punch-in');
         })
         .catch((err) => {
@@ -138,25 +119,19 @@ exports.postPunchIn = (req, res, next) => {
 };
 
 exports.getAnnualLeave = (req, res, next) => {
-    Employee.findById(employeeId)
-        .then((employee) => {
-            console.log(employee);
-            res.render('employee/annualleave', {
-                pageTitle: 'Annual Leave',
-                employee: employee,
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    res.render('employee/annualleave', {
+        pageTitle: 'Annual Leave',
+        employee: req.user,
+    });
 };
 
 exports.postAnnualLeave = (req, res, next) => {
+    const employeeId = req.user._id;
     const dayoff = req.body.dayoff;
     const reason = req.body.reason;
     const hourOff = req.body.hourOff ? req.body.hourOff : 8;
 
-    // Minus annualLeave with commensurate hourOff
+    // Minus annualLeave hours with commensurate hourOff
     Employee.findById(employeeId)
         .then((employee) => {
             employee.annualLeave -= hourOff;
@@ -171,35 +146,27 @@ exports.postAnnualLeave = (req, res, next) => {
         hourOff: hourOff,
     });
 
+    console.log('Add new annual leave');
     newAnnualLeave
         .save()
         .then((result) => {
-            console.log(result);
             res.redirect('/annualleave');
         })
         .catch((err) => console.log(err));
 };
 
 exports.getEditInfo = (req, res, next) => {
-    // In case employees collection has one user
-    Employee.findById(employeeId)
-        .then((employee) => {
-            console.log(employee);
-            res.render('editinfo/editinfo', {
-                pageTitle: 'Edit Info',
-                employee: employee,
-            });
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    res.render('editinfo/editinfo', {
+        pageTitle: 'Edit Info',
+        employee: req.user,
+    });
 };
 
 exports.postEditInfo = (req, res, next) => {
+    const employeeId = req.user._id;
     const updatedImageUrl = req.body.imageUrl;
     Employee.findById(employeeId)
         .then((employee) => {
-            console.log(req.body);
             employee.imageUrl = updatedImageUrl;
             employee.save();
         })
