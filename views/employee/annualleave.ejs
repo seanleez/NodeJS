@@ -3,74 +3,86 @@
         <%- include('../includes/navigation.ejs') %>
 
         <main>
-
-            <%- include('../includes/layout.ejs')%>
-
-                    <form
-                        action="/annualleave"
-                        method="POST"
-                        class="col-xs-12 col-md-6 col-lg-8"
-                    >
-                        <h2 class="text-center"><%= employee.name %></h2>
-                        <hr>
-                        <table>
-                            <tr>
-                                <td>
-                                    <label for="dayoff">Day off: </label>
-                                </td>
-                                <td>
-                                    <input
-                                        type="date"
-                                        name="dayoff"
-                                        id="dayoff"
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="reason">Reason: </label>
-                                </td>
-                                <td>
-                                    <textarea
-                                        name="reason"
-                                        id=""
-                                        cols="30"
-                                        rows="5"
-                                    ></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>Annual Leave: </label>
-                                </td>
-                                <td>
-                                    <label><%= employee.annualLeave %></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="hourOff">Hour Off:</label>
-                                </td>
-                                <td>
-                                    <input
-                                        type="number"
-                                        name="hourOff"
-                                        id="hourOff"
-                                    />
-                                </td>
-                            </tr>
-                        </table>
-                        <hr>
-                        <div class="text-center p-2">
-                            <button
-                                type="submit"
-                                class="btn btn-primary btn-lg"
-                            >
-                                Submit
-                            </button>
+            <% if(!isAuthenticated) { %>
+                <h1 class="text-center">Please Login</h1>
+            <% } else {%>
+                <h4 class="text-center">Today is: <%= new Date().toLocaleDateString("vi-VN") %></h4>
+                <div class="container">
+                    <div class="row my-3">
+                        <div class="col-xs-12 col-md-6 col-lg-4 text-center">
+                            <img
+                                src="<%= employee.imageUrl %>"
+                                alt="EmployeeAvatar"
+                            />
                         </div>
-                    </form>
+                        
+                        <form
+                            action="/annualleave"
+                            method="POST"
+                            class="col-xs-12 col-md-6 col-lg-8"
+                        >
+                            <h2 class="text-center"><%= employee.name %></h2>
+                            <hr>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <label for="dayoff">Day off: </label>
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="date"
+                                            name="dayoff"
+                                            id="dayoff"
+                                        />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="reason">Reason: </label>
+                                    </td>
+                                    <td>
+                                        <textarea
+                                            name="reason"
+                                            id=""
+                                            cols="30"
+                                            rows="5"
+                                        ></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>Annual Leave: </label>
+                                    </td>
+                                    <td>
+                                        <label><%= employee.annualLeave %></label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label for="hourOff">Hour Off:</label>
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            name="hourOff"
+                                            id="hourOff"
+                                        />
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr>
+                            <div class="text-center p-2">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-lg"
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            <% } %>
         </main>
         <%- include('../includes/end.ejs') %>

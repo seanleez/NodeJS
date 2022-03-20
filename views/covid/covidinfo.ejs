@@ -4,61 +4,72 @@
         <%- include('../includes/navigation.ejs') %>
 
         <main>
+            <% if(!isAuthenticated) { %>
+                <h1 class="text-center">Please Login</h1>
+            <% } else {%>
+                <h4 class="text-center">Today is: <%= new Date().toLocaleDateString("vi-VN") %></h4>
+                <div class="container">
+                    <div class="row my-3">
+                        <div class="col-xs-12 col-md-6 col-lg-4 text-center">
+                            <img
+                                src="<%= employee.imageUrl %>"
+                                alt="EmployeeAvatar"
+                            />
+                        </div>
 
-            <%- include('../includes/layout.ejs')%>
-
-                    <div class="col-xs-12 col-md-6 col-lg-8">
-                        <h2 class="text-center"><%= employee.name %></h2>
-                        <hr>
-                        <h4>Basic Information:</h4>
-                        <table>
-                            <tr>
-                                <td>Vaccine1:</td>
-                                <td><%= covidInfor.vaccineShot1 %></td>
-                                <td>Date:</td>
-                                <td><%= covidInfor.dateShot1.toLocaleDateString('vi-VN') %></td>
-                            </tr>
-                            <tr>
-                                <td>Vaccine2:</td>
-                                <td><%= covidInfor.vaccineShot2 %></td>
-                                <td>Date:</td>
-                                <td><%= covidInfor.dateShot2.toLocaleDateString('vi-VN') %></td>
-                            </tr>
-                            
-                        </table>
-                        <hr>
-                        <h4>Body Temprature Register (Recently):</h4>
-                        <table>
-                            <tr>
-                                <td>Temprature:</td>
-                                <td><%= bodyTempratureInfor.bodyTemprature %>°C</td>
-                            </tr>
-                            <tr>
-                                <td>Date:</td>
-                                <td><%= bodyTempratureInfor.date.toLocaleDateString() %></td>
-                                <td>Time:</td>
-                                <td><%= bodyTempratureInfor.date.toString().slice(16,24) %></td>
-                            </tr>
-                            <tr>
-                                <td>Negative:</td>
-                                <td><%= bodyTempratureInfor.negative ? 'Yes' : 'No' %></td>
-                            </tr>
-                        </table>
-                        <hr>
-                        <form
-                            action="/covidregistration"
-                            method="get"
-                            class="text-center"
-                        >
-                            <button
-                                type="submit"
-                                class="btn btn-primary btn-lg m-2"
+                        <div class="col-xs-12 col-md-6 col-lg-8">
+                            <h2 class="text-center"><%= employee.name %></h2>
+                            <hr>
+                            <h4>Basic Information:</h4>
+                            <table>
+                                <tr>
+                                    <td>Vaccine1:</td>
+                                    <td><%= covidInfor.vaccineShot1 %></td>
+                                    <td>Date:</td>
+                                    <td><%= covidInfor.dateShot1.toLocaleDateString('vi-VN') %></td>
+                                </tr>
+                                <tr>
+                                    <td>Vaccine2:</td>
+                                    <td><%= covidInfor.vaccineShot2 %></td>
+                                    <td>Date:</td>
+                                    <td><%= covidInfor.dateShot2.toLocaleDateString('vi-VN') %></td>
+                                </tr>
+                                
+                            </table>
+                            <hr>
+                            <h4>Body Temprature Register (Recently):</h4>
+                            <table>
+                                <tr>
+                                    <td>Temprature:</td>
+                                    <td><%= bodyTempratureInfor.bodyTemprature %>°C</td>
+                                </tr>
+                                <tr>
+                                    <td>Date:</td>
+                                    <td><%= bodyTempratureInfor.date.toLocaleDateString() %></td>
+                                    <td>Time:</td>
+                                    <td><%= bodyTempratureInfor.date.toString().slice(16,24) %></td>
+                                </tr>
+                                <tr>
+                                    <td>Negative:</td>
+                                    <td><%= bodyTempratureInfor.negative ? 'Yes' : 'No' %></td>
+                                </tr>
+                            </table>
+                            <hr>
+                            <form
+                                action="/covidregistration"
+                                method="get"
+                                class="text-center"
                             >
-                                Edit Covid Info
-                            </button>
-                        </form>
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-lg m-2"
+                                >
+                                    Edit Covid Info
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <% } %>
         </main>
         <%- include('../includes/end.ejs') %>

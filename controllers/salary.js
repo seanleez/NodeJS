@@ -1,4 +1,3 @@
-const Employee = require('../models/employee');
 const PunchData = require('../models/punchdata');
 
 var monthSalary;

@@ -12,8 +12,8 @@ img {
 }
 
 svg {
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 label {
@@ -29,4 +29,17 @@ table td {
     padding-left: 1rem;
     max-width: 8rem;
     font-weight: 500;
+}
+
+.user-message--error {
+    margin: auto;
+    margin-top: 1rem;
+    width: 25rem;
+    max-width: 90%;
+    border: 1px solid red;
+    color: red;
+    padding: 0.5rem;
+    border-radius: 3px;
+    background: rgb(240, 175, 175);
+    text-align: center;
 }

@@ -13,12 +13,13 @@ exports.getCovidInfo = (req, res, next) => {
                         p1.date > p2.date ? 1 : p2.date > p1.date ? -1 : 0
                     )[tempratures.length - 1];
 
-                    console.log('Display Body Temprature Infor:');
+                    console.log('Display Covid Infor.');
                     res.render('covid/covidinfo', {
                         pageTitle: 'Covid Information',
                         employee: req.user,
                         covidInfor: covidInformation,
                         bodyTempratureInfor: bodyTempratureInfor,
+                        isAuthenticated: req.session.isLoggedIn,
                     });
                 }
             );
@@ -30,6 +31,7 @@ exports.getCovidRegistration = (req, res, next) => {
     res.render('covid/covidregistration', {
         pageTitle: 'Covid Registration Form',
         employee: req.user,
+        isAuthenticated: req.session.isLoggedIn,
     });
 };
 

@@ -1,0 +1,23 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/auth.css">
+    </head>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main>
+            <% if(errorMessage) {%>
+                <div class="user-message--error"><%= errorMessage %></div>
+            <% } %>
+            <form action="/login" method="POST" class="login-form">
+                <div class="form-group my-3">
+                    <label for="username">User Name:</label>
+                    <input type="username" class="form-control" name="username" id="username" placeholder="Username">
+                </div>
+                <div class="form-group my-3">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="btn btn-success" type="submit">Login</button>
+            </form>
+        </main>
+        <%- include('../includes/end.ejs') %>
