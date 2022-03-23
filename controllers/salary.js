@@ -22,16 +22,18 @@ exports.getSalary = (req, res, next) => {
             const calculatedSalary =
                 salaryScale * 3000000 + (totalOverTimeInMonth / 60) * 2000000;
 
-            console.log('Display Salary Inforation.');
+            console.log('Display Salary Information.');
             res.render('salary/salary', {
                 pageTitle: 'Salary',
+                employee: req.user,
+                isManager: req.user.username.includes('manager') ? true : false,
                 hasPunchData: hasPunchData,
                 monthSalary: monthSalary,
                 salaryScale: salaryScale,
                 overTime: totalOverTimeInMonth,
                 salary: calculatedSalary,
-                employee: req.user,
             });
+            monthSalary = 0
         })
         .catch((err) => {
             const error = new Error(err);
@@ -63,6 +65,7 @@ exports.getWorkingTime = (req, res, next) => {
             res.render('salary/workingtime', {
                 pageTitle: 'Working Time',
                 employee: req.user,
+                isManager: req.user.username.includes('manager') ? true : false,
                 punchDatas: punchdatas,
                 hasPunchData: totalPunchdatas > 0 ? true : false,
                 currentPage: page,

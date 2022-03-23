@@ -105,7 +105,7 @@ app.use(errorController.get404);
 app.use((error, req, res, next) => {
     res.status(500).render('500', {
         pageTitle: 'Error!',
-        isAuthenticated: req.session.isLoggedIn,
+        isManager: req.user.username.includes('manager') ? true : false
     });
 });
 

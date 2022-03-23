@@ -4,6 +4,7 @@ const Employee = require('../models/employee');
 const PunchData = require('../models/punchdata');
 const AnnualLeave = require('../models/annualleave');
 
+const PUNCHDATA_PER_PAGE = 2;
 var punchDate;
 
 exports.getEmployee = (req, res, next) => {
@@ -11,6 +12,7 @@ exports.getEmployee = (req, res, next) => {
     res.render('employee', {
         pageTitle: 'Employee',
         employee: req.user,
+        isManager: req.user.username.includes('manager') ? true : false,
         errorMessage: '',
         oldInput: { date: '' },
         validationErrors: [],
@@ -35,6 +37,7 @@ exports.getPunchIn = (req, res, next) => {
             res.render('employee/punchin', {
                 pageTitle: 'Punch In',
                 employee: req.user,
+                isManager: req.user.username.includes('manager') ? true : false,
                 punchData: punchdata,
             });
         })
@@ -71,6 +74,7 @@ exports.postPunchIn = (req, res, next) => {
         return res.status(422).render('employee', {
             pageTitle: 'Employee',
             employee: req.user,
+            isManager: req.user.username.includes('manager') ? true : false,
             errorMessage: errors.array()[0].msg,
             oldInput: { date: req.body.date },
             validationErrors: errors.array(),
@@ -145,6 +149,7 @@ exports.getAnnualLeave = (req, res, next) => {
     res.render('employee/annualleave', {
         pageTitle: 'Annual Leave',
         employee: req.user,
+        isManager: req.user.username.includes('manager') ? true : false,
         errorMessage: '',
         oldInput: { dayoff: '', reason: '', hourOff: '' },
         validationErrors: [],
@@ -163,6 +168,7 @@ exports.postAnnualLeave = (req, res, next) => {
         return res.status(422).render('employee/annualleave', {
             pageTitle: 'Annual Leave',
             employee: req.user,
+            isManager: req.user.username.includes('manager') ? true : false,
             errorMessage: errors.array()[0].msg,
             oldInput: { dayoff: dayoff, reason: reason, hourOff: hourOff },
             validationErrors: errors.array(),
@@ -205,6 +211,7 @@ exports.getEditInfo = (req, res, next) => {
     res.render('editinfo/editinfo', {
         pageTitle: 'Edit Info',
         employee: req.user,
+        isManager: req.user.username.includes('manager') ? true : false,
         errorMessage: '',
     });
 };
@@ -216,6 +223,7 @@ exports.postEditInfo = (req, res, next) => {
         return res.status(422).render('editinfo/editinfo', {
             pageTitle: 'Edit Info',
             employee: req.user,
+            isManager: req.user.username.includes('manager') ? true : false,
             errorMessage: 'Attach file is not an image',
         });
     }
@@ -237,3 +245,114 @@ exports.postEditInfo = (req, res, next) => {
             return next(error);
         });
 };
+
+exports.getManager = (req, res, next) => {
+    Employee.find({ department: req.user.department })
+        .then((employees) => {
+            res.render('employee/manager', {
+                pageTitle: 'Manager',
+                employees: employees,
+                isManager: req.user.username.includes('manager') ? true : false,
+                errorMessage: '',
+            });
+        })
+        .catch((err) => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
+};
+
+exports.getPunchData = (req, res, next) => {
+    const employeeId = req.params.employeeId;
+    const page = +req.query.page || 1;
+    let totalPunchdatas;
+
+    Employee.findById(employeeId)
+        .then((employee) => {
+            PunchData.find({ employee_id: employeeId })
+                .countDocuments()
+                .then((numPunchdatas) => {
+                    totalPunchdatas = numPunchdatas;
+                    console.log(totalPunchdatas);
+                    return PunchData.find({ employee_id: employeeId })
+                        .sort({ date: 1 })
+                        .skip((page - 1) * PUNCHDATA_PER_PAGE)
+                        .limit(PUNCHDATA_PER_PAGE);
+                })
+                .then((punchdatas) => {
+                    console.log('Display Working Time Information.');
+                    res.render('employee/punchdata', {
+                        pageTitle: 'PunchData of Employee',
+                        employee: employee,
+                        isManager: req.user.username.includes('manager')
+                            ? true
+                            : false,
+                        punchDatas: punchdatas,
+                        errorMessage: '',
+                        hasPunchData: totalPunchdatas > 0 ? true : false,
+                        currentPage: page,
+                        hasNextPage:
+                            PUNCHDATA_PER_PAGE * page < totalPunchdatas,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1,
+                        lastPage: Math.ceil(
+                            totalPunchdatas / PUNCHDATA_PER_PAGE
+                        ),
+                    });
+                });
+        })
+        .catch((err) => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
+};
+
+exports.postPunchData = (req, res, next) => {
+    const employeeId = req.params.employeeId;
+    const page = +req.query.page || 1;
+    const date = req.body.date
+    PunchData.deleteOne({employee_id: employeeId, date: date}).then(
+        Employee.findById(employeeId)
+        .then((employee) => {
+            PunchData.find({ employee_id: employeeId })
+                .countDocuments()
+                .then((numPunchdatas) => {
+                    totalPunchdatas = numPunchdatas;
+                    console.log(totalPunchdatas);
+                    return PunchData.find({ employee_id: employeeId })
+                        .sort({ date: 1 })
+                        .skip((page - 1) * PUNCHDATA_PER_PAGE)
+                        .limit(PUNCHDATA_PER_PAGE);
+                })
+                .then((punchdatas) => {
+                    console.log('Display Working Time Information.');
+                    res.render('employee/punchdata', {
+                        pageTitle: 'PunchData of Employee',
+                        employee: employee,
+                        isManager: req.user.username.includes('manager')
+                            ? true
+                            : false,
+                        punchDatas: punchdatas,
+                        errorMessage: '',
+                        hasPunchData: totalPunchdatas > 0 ? true : false,
+                        currentPage: page,
+                        hasNextPage:
+                            PUNCHDATA_PER_PAGE * page < totalPunchdatas,
+                        hasPreviousPage: page > 1,
+                        nextPage: page + 1,
+                        previousPage: page - 1,
+                        lastPage: Math.ceil(
+                            totalPunchdatas / PUNCHDATA_PER_PAGE
+                        ),
+                    });
+                });
+        })
+    ).catch((err) => {
+        const error = new Error(err);
+        error.httpStatusCode = 500;
+        return next(error);
+    });
+}

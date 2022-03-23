@@ -30,6 +30,9 @@ exports.getCovidInfo = (req, res, next) => {
                         res.render('covid/covidinfo', {
                             pageTitle: 'Covid Information',
                             employee: req.user,
+                            isManager: req.user.username.includes('manager')
+                                ? true
+                                : false,
                             covidInfor: covidInformation,
                             bodyTempratureInfor: bodyTempratureInfor,
                             isManager: isManager,
@@ -50,6 +53,7 @@ exports.getCovidRegistration = (req, res, next) => {
     res.render('covid/covidregistration', {
         pageTitle: 'Covid Registration Form',
         employee: req.user,
+        isManager: req.user.username.includes('manager') ? true : false,
         errorMessage: '',
         oldInput: {
             vaccineShot1: '',
@@ -77,6 +81,7 @@ exports.postCovidRegistration = (req, res, next) => {
         return res.status(422).render('covid/covidregistration', {
             pageTitle: 'Covid Registration Form',
             employee: req.user,
+            isManager: req.user.username.includes('manager') ? true : false,
             errorMessage: errors.array()[0].msg,
             oldInput: {
                 vaccineShot1: vaccineShot1,
@@ -165,6 +170,7 @@ exports.getSeeEmployeesInfor = (req, res, next) => {
             res.render('covid/seeemployeesinfor', {
                 pageTitle: 'Employees Covid Information',
                 employees: employees,
+                isManager: req.user.username.includes('manager') ? true : false,
             });
         })
         .catch((err) => {

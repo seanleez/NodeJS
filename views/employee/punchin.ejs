@@ -19,7 +19,7 @@
                         <div class="col-xs-12 col-md-6 col-lg-8">
                             <h2 class="text-center"><%= employee.name %></h2>
                             <hr>
-                            <p>Date: <%= punchData.date.toLocaleDateString() %></p>
+                            <p>Date: <%= punchData.date.toLocaleDateString('vi-VN') %></p>
                             <div class="row d-flex">
                                 <% for(i = 0; i < punchData.punch.shift.length; i++) { %>
                                 <div class="card col-4">

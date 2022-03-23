@@ -9,11 +9,12 @@ const router = express.Router();
 
 router.get('/punch-in', isAuth, employeeController.getPunchIn);
 
-router.post('/punch-in',
-[
-    body('date', 'Choose the date').isDate(),
-]
-, isAuth, employeeController.postPunchIn);
+router.post(
+    '/punch-in',
+    [body('date', 'Choose the date').isDate()],
+    isAuth,
+    employeeController.postPunchIn
+);
 
 router.get('/annualleave', isAuth, employeeController.getAnnualLeave);
 
@@ -28,6 +29,12 @@ router.post(
     employeeController.postAnnualLeave
 );
 
-router.get('/', employeeController.getEmployee);
+router.get('/manager', isAuth, employeeController.getManager);
+
+router.get('/punchdata/:employeeId', isAuth, employeeController.getPunchData);
+
+router.post('/punchdata/:employeeId',isAuth,employeeController.postPunchData)
+
+router.get('/', isAuth, employeeController.getEmployee);
 
 module.exports = router;

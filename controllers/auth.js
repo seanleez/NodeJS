@@ -10,6 +10,7 @@ exports.getLogin = (req, res, next) => {
     }
     res.render('auth/login', {
         pageTitle: 'Login',
+        isManager: false,
         errorMessage: errMessage,
         oldInput: { username: '', password: '' },
         validationErrors: [],
@@ -24,6 +25,7 @@ exports.postLogin = (req, res, next) => {
         console.log(errors.array());
         return res.status(422).render('auth/login', {
             pageTitle: 'Login',
+            isManager: false,
             errorMessage: errors.array()[0].msg,
             oldInput: { username: username, password: password },
             validationErrors: errors.array(),
@@ -34,6 +36,7 @@ exports.postLogin = (req, res, next) => {
             if (!employee) {
                 return res.status(422).render('auth/login', {
                     pageTitle: 'Login',
+                    isManager: false,
                     errorMessage: 'Invalid username.',
                     oldInput: {
                         username: username,
@@ -53,6 +56,7 @@ exports.postLogin = (req, res, next) => {
                     return res.status(422).render('auth/login', {
                         path: '/login',
                         pageTitle: 'Login',
+                        isManager: false,
                         errorMessage: 'Incorrect password.',
                         oldInput: {
                             username: username,
