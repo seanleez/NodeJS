@@ -1,3 +1,4 @@
+const { validationResult } = require('express-validator/check');
 const Employee = require('../models/employee');
 
 exports.getLogin = (req, res, next) => {
@@ -10,17 +11,36 @@ exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
         pageTitle: 'Login',
         errorMessage: errMessage,
+        oldInput: { username: '', password: '' },
+        validationErrors: [],
     });
 };
 
 exports.postLogin = (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render('auth/login', {
+            pageTitle: 'Login',
+            errorMessage: errors.array()[0].msg,
+            oldInput: { username: username, password: password },
+            validationErrors: errors.array(),
+        });
+    }
     Employee.findOne({ username: username })
         .then((employee) => {
             if (!employee) {
-                req.flash('error', 'Invalid username or password');
-                return res.redirect('/login');
+                return res.status(422).render('auth/login', {
+                    pageTitle: 'Login',
+                    errorMessage: 'Invalid username.',
+                    oldInput: {
+                        username: username,
+                        password: password,
+                    },
+                    validationErrors: [{ param: 'username' }],
+                });
             } else {
                 if (employee.password === password) {
                     req.session.isLoggedIn = true;
@@ -30,12 +50,24 @@ exports.postLogin = (req, res, next) => {
                         res.redirect('/');
                     });
                 } else {
-                    req.flash('error', 'Invalid username or password');
-                    return res.redirect('/login');
+                    return res.status(422).render('auth/login', {
+                        path: '/login',
+                        pageTitle: 'Login',
+                        errorMessage: 'Incorrect password.',
+                        oldInput: {
+                            username: username,
+                            password: password,
+                        },
+                        validationErrors: [{ param: 'password' }],
+                    });
                 }
             }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 exports.postLogout = (req, res, next) => {

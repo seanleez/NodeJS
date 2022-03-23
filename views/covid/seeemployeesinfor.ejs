@@ -1,0 +1,33 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+        <main>
+            <% if(!isAuthenticated) { %>
+                <h1 class="text-center">Please Login</h1>
+            <% } else {%>
+                <h2 class="text-center">Employee List</h2>
+                <% employees.forEach(employee => {%>
+                    <div class="container">
+                        <div class="row my-3">
+                            <div class="col-xs-12 col-md-6 col-lg-4 text-center">
+                                <img
+                                    src="<%= employee.imageUrl %>"
+                                    alt="EmployeeAvatar"
+                                />
+                            </div>
+                            <div class="col-xs-12 col-md-6 col-lg-8">
+                                <h2 class="text-center"><%= employee.name %></h2>
+                                <hr>
+                                <div class="justify-content-center d-flex">
+                                    <a class="btn btn-success" href="/seeemployeesinfor/<%= employee._id %>">See Covid Information</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                <% }); %>
+            <% } %>
+        </main>
+        <%- include('../includes/end.ejs') %>

@@ -1,4 +1,5 @@
 <%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/auth.css">
     </head>
     <body>
         <%- include('../includes/navigation.ejs') %>
@@ -24,26 +25,53 @@
                             <h2 class="text-center"><%= employee.name %></h2>
                             <hr>
                             <h5>Basic Information:</h5>
+                            <% if(errorMessage) {%>
+                                <div class="user-message--error"><%= errorMessage %></div>
+                            <% } %>
                             <table>
                                 <tr>
                                     <td><label for="vaccineShot1">Vaccine Shot 1: </label></td>
                                     <td>
-                                        <input type="text" name="vaccineShot1" id="vaccineShot1">
+                                        <input 
+                                            class="<%= validationErrors.find(e => e.param === 'vaccineShot1') ? 'invalid' : ''%>" 
+                                            type="text" 
+                                            name="vaccineShot1" 
+                                            id="vaccineShot1"
+                                            value="<%= oldInput.vaccineShot1 %>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><label for="dateShot1">Date:</label></td>
-                                    <td><input type="date" name="dateShot1" id="dateShot1"></td>
+                                    <td>
+                                        <input 
+                                            class="<%= validationErrors.find(e => e.param === 'dateShot1') ? 'invalid' : ''%>" 
+                                            type="date" 
+                                            name="dateShot1" 
+                                            id="dateShot1"
+                                            value="<%= oldInput.dateShot1 %>">
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><label for="vaccineShot2">Vaccine Shot 2: </label></td>
                                     <td>
-                                        <input type="text" name="vaccineShot2" id="vaccineShot2">
+                                        <input 
+                                            class="<%= validationErrors.find(e => e.param === 'vaccineShot2') ? 'invalid' : ''%>" 
+                                            type="text" 
+                                            name="vaccineShot2" 
+                                            id="vaccineShot2"
+                                            value="<%= oldInput.vaccineShot2 %>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><label for="dateShot2">Date:</label></td>
-                                    <td><input type="date" name="dateShot2" id="dateShot2"></td>
+                                    <td>
+                                        <input 
+                                            class="<%= validationErrors.find(e => e.param === 'dateShot2') ? 'invalid' : ''%>" 
+                                            type="date" 
+                                            name="dateShot2" 
+                                            id="dateShot2"
+                                            value="<%= oldInput.dateShot2 %>">
+                                    </td>
                                 </tr>
                             </table>
                             <hr>
@@ -52,12 +80,18 @@
                                 <tr>
                                     <td><label for="bodyTemprature">Body Temprature: </label></td>
                                     <td>
-                                        <input type="number" name="bodyTemprature" id="bodyTemprature" step="0.5">
+                                        <input 
+                                            class="<%= validationErrors.find(e => e.param === 'bodyTemprature') ? 'invalid' : ''%>" 
+                                            type="number" 
+                                            name="bodyTemprature" 
+                                            id="bodyTemprature" 
+                                            step="0.5"
+                                            value="<%= oldInput.bodyTemprature %>">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><label for="negative">Negative With Covid:</label></td>
-                                    <td><input type="checkbox" name="negative" id="negative"></td>
+                                    <td><input type="checkbox" name="negative" id="negative" checked></td>
                                 </tr>
                             </table>
                             <hr>

@@ -1,4 +1,5 @@
 <%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/auth.css">
     <body>
         <%- include('../includes/navigation.ejs') %>
 
@@ -23,6 +24,9 @@
                         >
                             <h2 class="text-center"><%= employee.name %></h2>
                             <hr>
+                            <% if(errorMessage) {%>
+                                <div class="user-message--error"><%= errorMessage %></div>
+                            <% } %>
                             <table>
                                 <tr>
                                     <td>
@@ -30,9 +34,11 @@
                                     </td>
                                     <td>
                                         <input
+                                            class="<%= validationErrors.find(e => e.param === 'dayoff') ? 'invalid' : ''%>" 
                                             type="date"
                                             name="dayoff"
                                             id="dayoff"
+                                            value="<%= oldInput.dayoff %>"
                                         />
                                     </td>
                                 </tr>
@@ -42,10 +48,12 @@
                                     </td>
                                     <td>
                                         <textarea
+                                            class="<%= validationErrors.find(e => e.param === 'reason') ? 'invalid' : ''%>" 
                                             name="reason"
-                                            id=""
+                                            id="reason"
                                             cols="30"
                                             rows="5"
+                                            value="<%= oldInput.reason %>"
                                         ></textarea>
                                     </td>
                                 </tr>
@@ -63,9 +71,11 @@
                                     </td>
                                     <td>
                                         <input
+                                            class="<%= validationErrors.find(e => e.param === 'hourOff') ? 'invalid' : ''%>" 
                                             type="number"
                                             name="hourOff"
                                             id="hourOff"
+                                            value="<%= oldInput.hourOff %>"
                                         />
                                     </td>
                                 </tr>

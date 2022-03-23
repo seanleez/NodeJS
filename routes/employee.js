@@ -1,4 +1,4 @@
-const path = require('path');
+const { body } = require('express-validator/check');
 
 const express = require('express');
 
@@ -9,11 +9,24 @@ const router = express.Router();
 
 router.get('/punch-in', isAuth, employeeController.getPunchIn);
 
-router.post('/punch-in', isAuth, employeeController.postPunchIn);
+router.post('/punch-in',
+[
+    body('date', 'Choose the date').isDate(),
+]
+, isAuth, employeeController.postPunchIn);
 
 router.get('/annualleave', isAuth, employeeController.getAnnualLeave);
 
-router.post('/annualleave', isAuth, employeeController.postAnnualLeave);
+router.post(
+    '/annualleave',
+    [
+        body('dayoff', 'Choose the day off').isDate(),
+        body('reason', 'Invalid reason').isString().isLength({ min: 3 }).trim(),
+        body('hourOff', 'Fulfill hour off').isFloat(),
+    ],
+    isAuth,
+    employeeController.postAnnualLeave
+);
 
 router.get('/', employeeController.getEmployee);
 

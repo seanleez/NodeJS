@@ -1,5 +1,6 @@
 const PunchData = require('../models/punchdata');
 
+const PUNCHDATA_PER_PAGE = 2;
 var monthSalary;
 
 exports.getSalary = (req, res, next) => {
@@ -32,7 +33,11 @@ exports.getSalary = (req, res, next) => {
                 employee: req.user,
             });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 exports.postSalary = (req, res, next) => {
@@ -41,18 +46,36 @@ exports.postSalary = (req, res, next) => {
 };
 
 exports.getWorkingTime = (req, res, next) => {
-    PunchData.find({
-        employee_id: req.user._id,
-    })
+    const page = +req.query.page || 1;
+    let totalPunchdatas;
+    PunchData.find({ employee_id: req.user._id })
+        .countDocuments()
+        .then((numPunchdatas) => {
+            totalPunchdatas = numPunchdatas;
+            console.log(totalPunchdatas);
+            return PunchData.find({ employee_id: req.user._id })
+                .sort({ date: 1 })
+                .skip((page - 1) * PUNCHDATA_PER_PAGE)
+                .limit(PUNCHDATA_PER_PAGE);
+        })
         .then((punchdatas) => {
-            console.log('Display Working Time Inforation.');
+            console.log('Display Working Time Information.');
             res.render('salary/workingtime', {
                 pageTitle: 'Working Time',
                 employee: req.user,
-                punchDatas: punchdatas.sort((p1, p2) =>
-                    p1.date > p2.date ? 1 : p2.date > p1.date ? -1 : 0
-                ),
+                punchDatas: punchdatas,
+                hasPunchData: totalPunchdatas > 0 ? true : false,
+                currentPage: page,
+                hasNextPage: PUNCHDATA_PER_PAGE * page < totalPunchdatas,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1,
+                lastPage: Math.ceil(totalPunchdatas / PUNCHDATA_PER_PAGE),
             });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };

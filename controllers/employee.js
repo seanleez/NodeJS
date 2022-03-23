@@ -1,3 +1,5 @@
+const { validationResult } = require('express-validator/check');
+
 const Employee = require('../models/employee');
 const PunchData = require('../models/punchdata');
 const AnnualLeave = require('../models/annualleave');
@@ -9,6 +11,9 @@ exports.getEmployee = (req, res, next) => {
     res.render('employee', {
         pageTitle: 'Employee',
         employee: req.user,
+        errorMessage: '',
+        oldInput: { date: '' },
+        validationErrors: [],
     });
 };
 
@@ -33,7 +38,11 @@ exports.getPunchIn = (req, res, next) => {
                 punchData: punchdata,
             });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 exports.postPunchIn = (req, res, next) => {
@@ -55,6 +64,18 @@ exports.postPunchIn = (req, res, next) => {
         Math.abs(dateFinishShift - dateStartShift) / (60 * 1000);
 
     punchDate = dateStartShift;
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render('employee', {
+            pageTitle: 'Employee',
+            employee: req.user,
+            errorMessage: errors.array()[0].msg,
+            oldInput: { date: req.body.date },
+            validationErrors: errors.array(),
+        });
+    }
 
     PunchData.find()
         .then((punchdatas) => {
@@ -114,7 +135,9 @@ exports.postPunchIn = (req, res, next) => {
             res.redirect('/punch-in');
         })
         .catch((err) => {
-            console.log(err);
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
         });
 };
 
@@ -122,6 +145,9 @@ exports.getAnnualLeave = (req, res, next) => {
     res.render('employee/annualleave', {
         pageTitle: 'Annual Leave',
         employee: req.user,
+        errorMessage: '',
+        oldInput: { dayoff: '', reason: '', hourOff: '' },
+        validationErrors: [],
     });
 };
 
@@ -131,13 +157,29 @@ exports.postAnnualLeave = (req, res, next) => {
     const reason = req.body.reason;
     const hourOff = req.body.hourOff ? req.body.hourOff : 8;
 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        console.log(errors.array());
+        return res.status(422).render('employee/annualleave', {
+            pageTitle: 'Annual Leave',
+            employee: req.user,
+            errorMessage: errors.array()[0].msg,
+            oldInput: { dayoff: dayoff, reason: reason, hourOff: hourOff },
+            validationErrors: errors.array(),
+        });
+    }
+
     // Minus annualLeave hours with commensurate hourOff
     Employee.findById(employeeId)
         .then((employee) => {
             employee.annualLeave -= hourOff;
             employee.save();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 
     const newAnnualLeave = new AnnualLeave({
         employee_id: employeeId,
@@ -152,22 +194,37 @@ exports.postAnnualLeave = (req, res, next) => {
         .then((result) => {
             res.redirect('/annualleave');
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
+        });
 };
 
 exports.getEditInfo = (req, res, next) => {
     res.render('editinfo/editinfo', {
         pageTitle: 'Edit Info',
         employee: req.user,
+        errorMessage: '',
     });
 };
 
 exports.postEditInfo = (req, res, next) => {
     const employeeId = req.user._id;
-    const updatedImageUrl = req.body.imageUrl;
+    const updatedImage = req.file;
+    if (!updatedImage) {
+        return res.status(422).render('editinfo/editinfo', {
+            pageTitle: 'Edit Info',
+            employee: req.user,
+            errorMessage: 'Attach file is not an image',
+        });
+    }
+
     Employee.findById(employeeId)
         .then((employee) => {
-            employee.imageUrl = updatedImageUrl;
+            if (updatedImage) {
+                employee.imageUrl = updatedImage.path;
+            }
             employee.save();
         })
         .then((result) => {
@@ -175,6 +232,8 @@ exports.postEditInfo = (req, res, next) => {
             res.redirect('/editinfo');
         })
         .catch((err) => {
-            console.log(err);
+            const error = new Error(err);
+            error.httpStatusCode = 500;
+            return next(error);
         });
 };

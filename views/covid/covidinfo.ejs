@@ -19,6 +19,9 @@
 
                         <div class="col-xs-12 col-md-6 col-lg-8">
                             <h2 class="text-center"><%= employee.name %></h2>
+                            <% if(!isManager) {%>
+                                <h4 class="text-center">Manager: <%= managerName %></h4>
+                            <% } %>
                             <hr>
                             <h4>Basic Information:</h4>
                             <table>
@@ -67,6 +70,20 @@
                                     Edit Covid Info
                                 </button>
                             </form>
+                            <% if(isManager) {%>
+                                <form
+                                    action="/seeemployeesinfor"
+                                    method="get"
+                                    class="text-center"
+                                >
+                                    <button
+                                        type="submit"
+                                        class="btn btn-primary btn-lg m-2"
+                                    >
+                                        See Employees Infor
+                                    </button>
+                                </form>
+                            <% } %>
                         </div>
                     </div>
                 </div>
